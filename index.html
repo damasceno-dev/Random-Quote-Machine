@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Quote Machine</title>
 </head>
+<script src="https://kit.fontawesome.com/778fdc401a.js" crossorigin="anonymous"></script>
 <style>
     body {
         height: 100vh;
@@ -22,6 +23,9 @@
         background-color: aliceblue;
         width: 530px;
         height: 270px;
+
+        display: flex;
+        flex-direction: column;
     }
     .author-text {
         color: rgb(180, 188, 195);
@@ -30,7 +34,15 @@
 </style>
 <body>
     <div class="center-box">
-
+        <div class="quote-text-wrapper"><i class="fa-sharp fa-solid fa-quote-left fa-2xl"></i>
+            <div class="quote-text">If you do what you’ve always done, you’ll get what you’ve always gotten.</div>
+        </div>
+        <div class="author">- Tony Robbins</div>
+        <div class="buttons">
+            <a href="" class="twitter-button"></a>
+            <a href="" class="tumbrl-button"></a>
+            <button class="new-quote"></button>
+        </div>
     </div>
     <div class="author-text">by fastninja</div>
 </body>

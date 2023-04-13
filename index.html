@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap" rel="stylesheet">
+
     <title>Random Quote Machine</title>
 </head>
 <script src="https://kit.fontawesome.com/778fdc401a.js" crossorigin="anonymous"></script>
 <style>
+    * {
+        box-sizing: border-box;
+    }
     body {
         height: 100vh;
         overflow: hidden;
@@ -16,7 +24,7 @@
         flex-direction:column;
         align-items: center;
         justify-content: center;
-        font-family: 'Raleway', sans-serif
+        font-family: 'Raleway', sans-serif;
     }
     .center-box {
         border-radius: 5px;
@@ -26,22 +34,46 @@
 
         display: flex;
         flex-direction: column;
+        padding: 3rem;
     }
     .author-text {
         color: rgb(180, 188, 195);
         margin-top: 20px;
     }
+    .quote-text-wrapper {
+        margin-top: 30px;
+        display: flex;
+        gap: 5px;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .quote-icon {
+        margin-top: 1rem;
+    }
+    .quote-text {
+        text-align: center;
+        line-height: 1.9rem;
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+    .author {
+        
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
 </style>
 <body>
     <div class="center-box">
-        <div class="quote-text-wrapper"><i class="fa-sharp fa-solid fa-quote-left fa-2xl"></i>
-            <div class="quote-text">If you do what you’ve always done, you’ll get what you’ve always gotten.</div>
+        <div class="quote-text-wrapper">
+            <i class="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon"></i>
+            <div class="quote-text">The only way to do great work is to love what you do.</div>
         </div>
         <div class="author">- Tony Robbins</div>
         <div class="buttons">
             <a href="" class="twitter-button"></a>
             <a href="" class="tumbrl-button"></a>
-            <button class="new-quote"></button>
+            <button class="new-quote">New quote</button>
         </div>
     </div>
     <div class="author-text">by fastninja</div>

@@ -15,6 +15,8 @@
 <style>
     * {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
     }
     body {
         height: 100vh;
@@ -27,55 +29,101 @@
         font-family: 'Raleway', sans-serif;
     }
     .center-box {
-        border-radius: 5px;
+        border-radius: 4px;
         background-color: aliceblue;
-        width: 530px;
-        height: 270px;
+        width: 550px;
+        height: 320px;
 
         display: flex;
         flex-direction: column;
-        padding: 3rem;
+        padding: 2rem 3rem 0rem 3rem;
     }
     .author-text {
         color: rgb(180, 188, 195);
         margin-top: 20px;
     }
     .quote-text-wrapper {
-        margin-top: 30px;
-        display: flex;
         gap: 5px;
         justify-content: space-between;
         align-items: flex-start;
     }
     .quote-icon {
-        margin-top: 1rem;
+        display: inline-block;
+        margin-right: 15px;
     }
     .quote-text {
         text-align: center;
-        line-height: 1.9rem;
-        font-size: 1.5rem;
+        line-height: 2.2rem;
+        font-size: 1.7rem;
         font-weight: 500;
     }
     .author {
-        
         display: flex;
         justify-content: flex-end;
         margin-top: 1rem;
+    }
+    .buttons {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .interact-links {
+        display: flex;
+        gap: 6px;
+    }
+    .interact {
+        border-radius: 2px;
+        width: 40px;
+        height: 38px;
+        background-color: darkslateblue;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .new-quote {
+        background-color: darkslateblue;
+        color: aliceblue;
+        width: 100px;
+        border-radius: 3px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .hover-effect:hover {
+        background-color: rgb(106, 96, 170);
+        transition: all 0.4s;
     }
 </style>
 <body>
     <div class="center-box">
         <div class="quote-text-wrapper">
-            <i class="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon"></i>
-            <div class="quote-text">The only way to do great work is to love what you do.</div>
+            
+            <div class="quote-text"><i class="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style="color: darkslateblue"></i>If you hear a voice within you say “you cannot paint,” then by all means paint and that voice will be silenced.</div>
         </div>
-        <div class="author">- Tony Robbins</div>
+        <div class="author">- Vincent Van Gogh</div>
         <div class="buttons">
-            <a href="" class="twitter-button"></a>
-            <a href="" class="tumbrl-button"></a>
-            <button class="new-quote">New quote</button>
+            <div class="interact-links">
+                <a href="" class="interact twitter-button hover-effect">
+                    <i class="fa-brands fa-twitter fa-1x" style="color: #ffffff;"></i>
+                </a>
+                <a href="" class="interact tumbrl-button hover-effect">
+                    <i class="fa-brands fa-tumblr fa-1x" style="color: #ffffff;"></i>
+                </a>
+            </div>
+            <button class="new-quote hover-effect">New quote</button>
         </div>
     </div>
     <div class="author-text">by fastninja</div>
+
+
+    <script>
+        
+        fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json')
+    .then((response) => response.json())
+    .then((json) => {
+        var as = JSON.parse(json)
+        console.log(as)
+    });
+    </script>
 </body>
 </html>

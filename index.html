@@ -12,7 +12,7 @@
     <title>Random Quote Machine</title>
 </head>
 <script src="https://kit.fontawesome.com/778fdc401a.js" crossorigin="anonymous"></script>
-<style>
+<style id="my-style">
     * {
         box-sizing: border-box;
         margin: 0;
@@ -21,12 +21,12 @@
     body {
         height: 100vh;
         overflow: hidden;
-        background-color: darkslateblue;
         display: flex;
         flex-direction:column;
         align-items: center;
         justify-content: center;
         font-family: 'Raleway', sans-serif;
+        transition: all 0.7s;
     }
     .center-box {
         border-radius: 4px;
@@ -39,7 +39,7 @@
         padding: 2rem 3rem 0rem 3rem;
     }
     .author-text {
-        color: rgb(180, 188, 195);
+        color:aliceblue;
         margin-top: 20px;
     }
     .quote-text-wrapper {
@@ -50,6 +50,7 @@
     .quote-icon {
         display: inline-block;
         margin-right: 15px;
+        transition: color 0.2s;
     }
     .quote-text {
         text-align: center;
@@ -59,6 +60,10 @@
     }
     #quote-text {
         display: inline;
+        transition: color 0.8s;
+    }
+    #quote-author {
+        transition: color 0.8s;
     }
     .author {
         display: flex;
@@ -74,11 +79,13 @@
         display: flex;
         gap: 6px;
     }
+    a {
+        text-decoration: none;
+    }
     .interact {
         border-radius: 2px;
         width: 40px;
         height: 38px;
-        background-color: darkslateblue;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -93,17 +100,18 @@
     }
 
     .hover-effect:hover {
-        background-color: rgb(106, 96, 170);
-        transition: all 0.4s;
-    }
+                       background-color: var(--background-hover);
+                       transition: all 0.4s; 
+                    }
+
 </style>
 <body>
     <div class="center-box">
         <div class="quote-text-wrapper">
             
-            <div class="quote-text"><i class="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style="color: darkslateblue"></i><div id="quote-text">When I was 5 years old, my mother always told me that happiness was the key to life. When I went to school, they asked me what I wanted to be when I grew up. I wrote down ‘happy’. They told me I didn’t understand the assignment, and I told them they didn’t understand life.</div></div>
+            <div class="quote-text"><i class="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style="color: darkslateblue"></i><div id="quote-text"></div></div>
         </div>
-        <div class="author" id="quote-author">- Vincent Van Gogh</div>
+        <div class="author" id="quote-author"></div>
         <div class="buttons">
             <div class="interact-links">
                 <a href="" class="interact twitter-button hover-effect">
@@ -119,18 +127,15 @@
     <div class="author-text">by fastninja</div>
 
 
-    <script>
-    
-    var quotesArray;
-    
+    <script>    
     // fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json')
     //     .then((response) => response.json())
     //     .then((quotesObject) => {
     //         quotesArray = quotesObject.quotes;
     //     })
     //     .then(() => {
-    //         document.getElementById('quote-text').innerText = getRandomQuote().quote;
-    //         document.getElementById('quote-author').innerText = "- " + getRandomQuote().author;
+    //         document.getElementById('quote-text').innerText = getRandomElement().quote;
+    //         document.getElementById('quote-author').innerText = "- " + getRandomElement().author;
 
     //         console.log('Height quote: ',document.getElementById('quote-text').offsetHeight,
     //                     'Height author: ', document.getElementById('quote-author').offsetHeight,
@@ -143,19 +148,47 @@
     //             document.getElementsByClassName('center-box')[0].setAttribute('style', 'height: ' + boxHeight + 'px')
     //     });
 
+    var colors = [
+        '#16a085',
+        '#27ae60',
+        '#2c3e50',
+        '#f39c12',
+        '#e74c3c',
+        '#9b59b6',
+        '#FB6964',
+        '#342224',
+        '#472E32',
+        '#BDBB99',
+        '#77B1A9',
+        '#73A857',
+        '#483d8b'];
+
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
     async function fetchQuotesJSON() {
         const response = await fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json');
         const json = await response.json()
         const quotesArray = await json.quotes;
 
         
-        let randomQuote = getRandomQuote(quotesArray);
+        let randomQuote = getRandomElement(quotesArray);
+        let randomColor = getRandomElement(colors);
+
         setRandomQuoteAndAuthor('quote-text','quote-author', randomQuote)
+        setRandomColor(randomColor);
+        setHoverEffect(randomColor);
 
         setFlexibleHeight('center-box')
     }
 
-    function getRandomQuote(array) {
+    function getRandomElement(array) {
         return array[
             Math.floor(Math.random() * array.length)
         ];
@@ -165,8 +198,29 @@
 
         document.getElementById(textElementID).innerText = quoteElement.quote;
         document.getElementById(authorElementID).innerText = "- " + quoteElement.author;
+    }
+
+    function setRandomColor(color) {
+        document.getElementsByTagName('body')[0].setAttribute('style', 'background-color:' +color);
+        document.getElementsByClassName('interact')[0].setAttribute('style', 'background-color:' +color);
+        document.getElementsByClassName('interact')[1].setAttribute('style', 'background-color:' +color);
+        document.getElementsByClassName('new-quote')[0].setAttribute('style', 'background-color:' +color);
+        document.getElementById('quote-text').setAttribute('style', 'color:' +color);
+        document.getElementById('quote-author').setAttribute('style', 'color:' +color);
+        document.getElementsByClassName('quote-icon')[0].setAttribute('style', 'color:' +color);
+    }
+
+
+    function setHoverEffect(color) {
+        var css = document.getElementsByClassName('hover-effect');
+        console.log(css)
+
+        for(let i = 0; i < css.length; i++) {
+            css[i].style.setProperty('--background-hover', `rgba(${hexToRgb(color).r},${hexToRgb(color).g},${hexToRgb(color).b},0.1)`)
+        }
 
     }
+
 
     function setFlexibleHeight(classElement) {
         const boxHeight = 120 + document.getElementById('quote-text').offsetHeight + document.getElementById('quote-author').offsetHeight + 
@@ -180,14 +234,14 @@
 
     document.getElementById('new-quote-button').addEventListener('click', fetchQuotesJSON)
 
-    // getRandomQuote()
+    // getRandomElement()
 
     // var quoteHtml = document.getElementById('quote-text');
     // var quoteAuthor = document.getElementById('quote-author');
     // console.log(quoteHtml)
     // console.log(quotesArray)
-    // quoteHtml.innerText = getRandomQuote().quote;
-    // quoteAuthor.innerText = getRandomQuote().author;
+    // quoteHtml.innerText = getRandomElement().quote;
+    // quoteAuthor.innerText = getRandomElement().author;
 
 
     </script>

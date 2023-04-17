@@ -112,16 +112,15 @@
 <body>
     <div class="center-box">
         <div class="quote-text-wrapper">
-            
             <div class="quote-text"><i class="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style="color: darkslateblue"></i><div id="quote-text"></div></div>
         </div>
         <div class="author" id="quote-author"></div>
         <div class="buttons">
             <div class="interact-links">
-                <a href="" class="interact twitter-button hover-effect">
+                <a href="" id="tweet-quote" class="interact twitter-button hover-effect" target="_blank">
                     <i class="fa-brands fa-twitter fa-1x" style="color:#ffffff;"></i>
                 </a>
-                <a href="" class="interact tumbrl-button hover-effect">
+                <a href="" id="tumblr-quote" class="interact tumbrl-button hover-effect" target="_blank">
                     <i class="fa-brands fa-tumblr fa-1x" style="color: #ffffff;"></i>
                 </a>
             </div>
@@ -131,27 +130,7 @@
     <div class="author-text">by fastninja</div>
 
 
-    <script>    
-    // fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json')
-    //     .then((response) => response.json())
-    //     .then((quotesObject) => {
-    //         quotesArray = quotesObject.quotes;
-    //     })
-    //     .then(() => {
-    //         document.getElementById('quote-text').innerText = getRandomElement().quote;
-    //         document.getElementById('quote-author').innerText = "- " + getRandomElement().author;
-
-    //         console.log('Height quote: ',document.getElementById('quote-text').offsetHeight,
-    //                     'Height author: ', document.getElementById('quote-author').offsetHeight,
-    //                     'Height buttons: ', document.getElementsByClassName('buttons')[0].offsetHeight,
-    //                     'Height center-box: ', document.getElementsByClassName('center-box')[0].offsetHeight)
-
-    //         const boxHeight = 120 + document.getElementById('quote-text').offsetHeight + document.getElementById('quote-author').offsetHeight + 
-    //             document.getElementsByClassName('buttons')[0].offsetHeight;
-
-    //             document.getElementsByClassName('center-box')[0].setAttribute('style', 'height: ' + boxHeight + 'px')
-    //     });
-
+    <script> 
     var colors = ['#16a085','#27ae60','#2c3e50','#f39c12','#e74c3c','#9b59b6','#FB6964','#342224','#472E32','#BDBB99','#77B1A9','#73A857','#483d8b'];
 
         function hexToRgb(hex) {
@@ -188,6 +167,15 @@
     function setRandomQuoteAndAuthor(textElementID, authorElementID, quoteElement) {
         document.getElementById(textElementID).innerText = quoteElement.quote;
         document.getElementById(authorElementID).innerText = "- " + quoteElement.author;
+
+        document.getElementById('tweet-quote').setAttribute('href', 'https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=' +
+            encodeURIComponent('"' + quoteElement.quote + '" ' + quoteElement.author))
+
+        document.getElementById('tumblr-quote').setAttribute('href', 'https://www.tumblr.com/widgets/share/tool?posttype=quote&tags=quotes,freecodecamp&caption=' +
+            encodeURIComponent(quoteElement.author) +
+            '&content=' +
+            encodeURIComponent(quoteElement.quote) +
+            '&canonicalUrl=https%3A%2F%2Fwww.tumblr.com%2Fbuttons&shareSource=tumblr_share_button')
     }
 
     function setRandomColor(color) {

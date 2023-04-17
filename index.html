@@ -12,12 +12,13 @@
     <title>Random Quote Machine</title>
 </head>
 <script src="https://kit.fontawesome.com/778fdc401a.js" crossorigin="anonymous"></script>
-<style id="my-style">
+<style>
     * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
     }
+
     body {
         height: 100vh;
         overflow: hidden;
@@ -26,7 +27,8 @@
         align-items: center;
         justify-content: center;
         font-family: 'Raleway', sans-serif;
-        transition: all 0.7s;
+        transition: all;
+        transition-duration: 1.3s;
     }
     .center-box {
         border-radius: 4px;
@@ -50,7 +52,7 @@
     .quote-icon {
         display: inline-block;
         margin-right: 15px;
-        transition: color 0.2s;
+        transition: color 0.8s;
     }
     .quote-text {
         text-align: center;
@@ -60,10 +62,10 @@
     }
     #quote-text {
         display: inline;
-        transition: color 0.8s;
+        transition: color 1.2s;
     }
     #quote-author {
-        transition: color 0.8s;
+        transition: color 1.2s;
     }
     .author {
         display: flex;
@@ -101,7 +103,7 @@
 
     .hover-effect:hover {
                        background-color: var(--background-hover);
-                       transition: all 0.4s; 
+                       transition: color 1.2s,background-color 1.2s; 
                     }
 
 </style>
@@ -115,7 +117,7 @@
         <div class="buttons">
             <div class="interact-links">
                 <a href="" class="interact twitter-button hover-effect">
-                    <i class="fa-brands fa-twitter fa-1x" style="color: #ffffff;"></i>
+                    <i class="fa-brands fa-twitter fa-1x" style="color:#ffffff;"></i>
                 </a>
                 <a href="" class="interact tumbrl-button hover-effect">
                     <i class="fa-brands fa-tumblr fa-1x" style="color: #ffffff;"></i>
@@ -148,20 +150,7 @@
     //             document.getElementsByClassName('center-box')[0].setAttribute('style', 'height: ' + boxHeight + 'px')
     //     });
 
-    var colors = [
-        '#16a085',
-        '#27ae60',
-        '#2c3e50',
-        '#f39c12',
-        '#e74c3c',
-        '#9b59b6',
-        '#FB6964',
-        '#342224',
-        '#472E32',
-        '#BDBB99',
-        '#77B1A9',
-        '#73A857',
-        '#483d8b'];
+    var colors = ['#16a085','#27ae60','#2c3e50','#f39c12','#e74c3c','#9b59b6','#FB6964','#342224','#472E32','#BDBB99','#77B1A9','#73A857','#483d8b'];
 
         function hexToRgb(hex) {
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -181,11 +170,11 @@
         let randomQuote = getRandomElement(quotesArray);
         let randomColor = getRandomElement(colors);
 
-        setRandomQuoteAndAuthor('quote-text','quote-author', randomQuote)
+        setRandomQuoteAndAuthor('quote-text','quote-author', randomQuote);
         setRandomColor(randomColor);
         setHoverEffect(randomColor);
 
-        setFlexibleHeight('center-box')
+        setFlexibleHeight('center-box');
     }
 
     function getRandomElement(array) {
@@ -195,7 +184,6 @@
     }
 
     function setRandomQuoteAndAuthor(textElementID, authorElementID, quoteElement) {
-
         document.getElementById(textElementID).innerText = quoteElement.quote;
         document.getElementById(authorElementID).innerText = "- " + quoteElement.author;
     }
@@ -216,7 +204,12 @@
         console.log(css)
 
         for(let i = 0; i < css.length; i++) {
-            css[i].style.setProperty('--background-hover', `rgba(${hexToRgb(color).r},${hexToRgb(color).g},${hexToRgb(color).b},0.1)`)
+            css[i].addEventListener('mouseenter', (event) => {
+                event.target.style.backgroundColor = `rgba(${hexToRgb(color).r},${hexToRgb(color).g},${hexToRgb(color).b},0.7)`
+            })
+            css[i].addEventListener('mouseleave', (event) => {
+                event.target.style.backgroundColor = `rgba(${hexToRgb(color).r},${hexToRgb(color).g},${hexToRgb(color).b},1)`
+            })
         }
 
     }

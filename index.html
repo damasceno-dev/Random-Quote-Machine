@@ -30,7 +30,7 @@
         transition: all;
         transition-duration: 1.3s;
     }
-    .center-box {
+    #quote-box {
         border-radius: 4px;
         background-color: aliceblue;
         width: 550px;
@@ -60,14 +60,14 @@
         font-size: 1.7rem;
         font-weight: 500;
     }
-    #quote-text {
+    #text {
         display: inline;
         transition: color 1.2s;
     }
-    #quote-author {
+    #author {
         transition: color 1.2s;
     }
-    .author {
+    .quote-author {
         display: flex;
         justify-content: flex-end;
         margin-top: 1rem;
@@ -110,11 +110,11 @@
 
 </style>
 <body>
-    <div class="center-box">
+    <div id="quote-box">
         <div class="quote-text-wrapper">
-            <div class="quote-text"><i class="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style="color: darkslateblue"></i><div id="quote-text"></div></div>
+            <div class="quote-text"><i class="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style="color: darkslateblue"></i><div id="text"></div></div>
         </div>
-        <div class="author" id="quote-author"></div>
+        <div class="quote-author" id="author"></div>
         <div class="buttons">
             <div class="interact-links">
                 <a href="" id="tweet-quote" class="interact twitter-button hover-effect" target="_blank">
@@ -124,7 +124,7 @@
                     <i class="fa-brands fa-tumblr fa-1x" style="color: #ffffff;"></i>
                 </a>
             </div>
-            <button id="new-quote-button" class="new-quote hover-effect">New quote</button>
+            <button id="new-quote" class="new-quote hover-effect">New quote</button>
         </div>
     </div>
     <div class="author-text">by fastninja</div>
@@ -151,11 +151,11 @@
         let randomQuote = getRandomElement(quotesArray);
         let randomColor = getRandomElement(colors);
 
-        setRandomQuoteAndAuthor('quote-text','quote-author', randomQuote);
+        setRandomQuoteAndAuthor('text','author', randomQuote);
         setRandomColor(randomColor);
         setHoverEffect(randomColor);
 
-        setFlexibleHeight('center-box');
+        setFlexibleHeight('quote-box');
     }
 
     function getRandomElement(array) {
@@ -183,8 +183,8 @@
         document.getElementsByClassName('interact')[0].setAttribute('style', 'background-color:' +color);
         document.getElementsByClassName('interact')[1].setAttribute('style', 'background-color:' +color);
         document.getElementsByClassName('new-quote')[0].setAttribute('style', 'background-color:' +color);
-        document.getElementById('quote-text').setAttribute('style', 'color:' +color);
-        document.getElementById('quote-author').setAttribute('style', 'color:' +color);
+        document.getElementById('text').setAttribute('style', 'color:' +color);
+        document.getElementById('author').setAttribute('style', 'color:' +color);
         document.getElementsByClassName('quote-icon')[0].setAttribute('style', 'color:' +color);
     }
 
@@ -205,27 +205,17 @@
     }
 
 
-    function setFlexibleHeight(classElement) {
-        const boxHeight = 120 + document.getElementById('quote-text').offsetHeight + document.getElementById('quote-author').offsetHeight + 
+    function setFlexibleHeight(idElement) {
+        const boxHeight = 120 + document.getElementById('text').offsetHeight + document.getElementById('author').offsetHeight + 
             document.getElementsByClassName('buttons')[0].offsetHeight;
 
-        document.getElementsByClassName(classElement)[0].setAttribute('style', 'height: ' + boxHeight + 'px')
+        document.getElementById(idElement).setAttribute('style', 'height: ' + boxHeight + 'px')
 
     }
 
     fetchQuotesJSON()
 
-    document.getElementById('new-quote-button').addEventListener('click', fetchQuotesJSON)
-
-    // getRandomElement()
-
-    // var quoteHtml = document.getElementById('quote-text');
-    // var quoteAuthor = document.getElementById('quote-author');
-    // console.log(quoteHtml)
-    // console.log(quotesArray)
-    // quoteHtml.innerText = getRandomElement().quote;
-    // quoteAuthor.innerText = getRandomElement().author;
-
+    document.getElementById('new-quote').addEventListener('click', fetchQuotesJSON)
 
     </script>
 </body>

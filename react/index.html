@@ -132,6 +132,7 @@
       function QuoteBox() {
         var colors = ['#16a085','#27ae60','#2c3e50','#f39c12','#e74c3c','#9b59b6','#FB6964','#342224','#472E32','#BDBB99','#77B1A9','#73A857','#483d8b'];
         const [quotesArray, setQuotesArray] = React.useState([]);
+        const [newQuote, setNewQuote] = React.useState({});
 
         
         function getRandomElement(array) {
@@ -140,17 +141,15 @@
             ];
         }
 
-
-
         async function fetchQuotesJSON() {
                 const response = await fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json');
                 const json = await response.json()
                 const data = await json.quotes;
                 setQuotesArray(data)
-
+   
                 
-                let randomColor = getRandomElement(colors);
 
+                handleNewQuote()
                 // setRandomQuoteAndAuthor('text','author', randomQuote);
                 // setRandomColor(randomColor);
                 // setHoverEffect(randomColor);
@@ -163,17 +162,46 @@
             fetchQuotesJSON();
         }, [])
 
-        const randomQuote= getRandomElement(quotesArray);
-        console.log(randomQuote)
+
+        let randomQuote= getRandomElement(quotesArray);
+        // setRandomQuote(quote)
+
+        function handleNewQuote() {
+            let quote = getRandomElement(quotesArray);
+            setNewQuote(quote)
+
+            let randomColor = getRandomElement(colors);
+            setRandomColors(randomColor);
+        }
+
+        function setRandomColors(color) {
+            let bodyStyle = document.getElementsByTagName('body')[0].style;
+            let intOnetyle = document.getElementsByClassName('interact')[0].style;
+            let intTwoStyle = document.getElementsByClassName('interact')[1].style;
+            let quoteStyle = document.getElementsByClassName('new-quote')[0].style;
+            let textStyle = document.getElementById('text').style;
+            let authorStyle = document.getElementById('author').style;
+            let quoteIconStyle = document.getElementsByClassName('quote-icon')[0].style;
+            
+            bodyStyle.backgroundColor = color;
+            intOnetyle.backgroundColor = color;
+            intTwoStyle.backgroundColor = color;
+            quoteStyle.backgroundColor = color;
+            textStyle.color = color;
+            authorStyle.color = color;
+            quoteIconStyle.color = color;
+        }
+
         return (
             <div id="quote-box">
                 <div className="quote-text-wrapper">
                     <div className="quote-text"><i className="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style={{color: 'darkslateblue'}}></i>
                         {quotesArray.length > 0 ? <div id="text">{randomQuote.quote}</div> : <div>loading...</div>}
-                        
                     </div>
                 </div>
-                <div className="quote-author" id="author"></div>
+                <div className="quote-author" id="author">
+                    {quotesArray.length > 0 ? <div id="text">- {randomQuote.author}</div> : <div>loading...</div>}
+                </div>
                 <div className="buttons">
                     <div className="interact-links">
                         <a href="" id="tweet-quote" className="interact twitter-button hover-effect" target="_blank">
@@ -183,7 +211,7 @@
                             <i className="fa-brands fa-tumblr fa-1x" style={{color: '#ffffff'}}></i>
                         </a>
                     </div>
-                    <button id="new-quote" className="new-quote hover-effect">New quote</button>
+                    <button onClick={handleNewQuote} id="new-quote" className="new-quote hover-effect">New quote</button>
                 </div>
             </div>
 

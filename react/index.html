@@ -28,15 +28,20 @@
         transition: all;
         transition-duration: 1.3s;
     }
+    #root {
+        display: flex;
+        flex-direction:column;
+        align-items: center;
+        justify-content: center;
+    }
     #quote-box {
         border-radius: 4px;
         background-color: aliceblue;
         width: 550px;
-        height: 320px;
 
         display: flex;
         flex-direction: column;
-        padding: 2rem 3rem 0rem 3rem;
+        padding: 3rem;
     }
     .author-text {
         color:aliceblue;
@@ -109,7 +114,6 @@
 </style>
 <body>
     <div id="root"></div>
-    <div class="author-text">by fastninja</div>
 
     <script src="https://kit.fontawesome.com/778fdc401a.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
@@ -123,16 +127,15 @@
 
       function App() {
         return (
-            <div>
-                <QuoteBox/>
-            </div>
+            <QuoteBox/>
         )
       }
 
       function QuoteBox() {
         var colors = ['#16a085','#27ae60','#2c3e50','#f39c12','#e74c3c','#9b59b6','#FB6964','#342224','#472E32','#BDBB99','#77B1A9','#73A857','#483d8b'];
         const [quotesArray, setQuotesArray] = React.useState([]);
-        const [newQuote, setNewQuote] = React.useState({});
+        const [randomQuote, setRandomQuote] = React.useState({});
+        const [quoteBoxHeight, setQuoteBoxHeight] = React.useState(0);
 
         
         function getRandomElement(array) {
@@ -142,19 +145,23 @@
         }
 
         async function fetchQuotesJSON() {
-                const response = await fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json');
-                const json = await response.json()
-                const data = await json.quotes;
-                setQuotesArray(data)
+            const response = await fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json');
+            const json = await response.json()
+            const data = await json.quotes;
+            setQuotesArray(data)
    
-                
+            let quote= getRandomElement(data);
+            setRandomQuote(quote)
 
-                handleNewQuote()
-                // setRandomQuoteAndAuthor('text','author', randomQuote);
-                // setRandomColor(randomColor);
-                // setHoverEffect(randomColor);
+            let randomColor = getRandomElement(colors);
+            setRandomColors(randomColor);
 
-                // setFlexibleHeight('quote-box');
+            // setFlexibleHeight(120)
+            // setRandomQuoteAndAuthor('text','author', randomQuote);
+            // setRandomColor(randomColor);
+            // setHoverEffect(randomColor);
+
+            // setFlexibleHeight('quote-box');
             }
 
 
@@ -163,15 +170,17 @@
         }, [])
 
 
-        let randomQuote= getRandomElement(quotesArray);
-        // setRandomQuote(quote)
 
-        function handleNewQuote() {
-            let quote = getRandomElement(quotesArray);
-            setNewQuote(quote)
+
+        function handleNewQuote() {            
+
+            let quote= getRandomElement(quotesArray);
+            setRandomQuote(quote)
 
             let randomColor = getRandomElement(colors);
             setRandomColors(randomColor);
+
+            // setFlexibleHeight(120)
         }
 
         function setRandomColors(color) {
@@ -191,31 +200,56 @@
             authorStyle.color = color;
             quoteIconStyle.color = color;
         }
+        
+        function setFlexibleHeight(marginNumber) {
+            let textElement = document.getElementById('text');
+            let authorElement = document.getElementById('author');
+            let buttonElements = document.getElementsByClassName('buttons')[0];
+            let quoteBoxStyle = document.getElementById('quote-box').style;
 
+            const boxHeight = marginNumber + textElement.offsetHeight + authorElement.offsetHeight + 
+            buttonElements.offsetHeight;
+            console.log('text height: ', textElement.offsetHeight)
+            console.log(document.getElementById('text').offsetHeight)
+            console.log('author height: ', authorElement.offsetHeight)
+            console.log('button height: ', buttonElements.offsetHeight)
+            setQuoteBoxHeight(boxHeight)
+
+
+            console.log(boxHeight)
+
+            console.log(quoteBoxStyle.height)
+        }
+
+        //todo: descobrir por que está atualizando a randomQuote
+        // ok: ocorria que ao chamar o set do useState, ele chamava uma nova renderização, e o código que coloquei antes do return era rodado novamente:
+        // let randomQuote= getRandomElement(quotesArray);
+        // Para corrigir, coloquei o set do randomquote logo após o set do quotes array, ainda no fetchJSON.
         return (
-            <div id="quote-box">
-                <div className="quote-text-wrapper">
-                    <div className="quote-text"><i className="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style={{color: 'darkslateblue'}}></i>
-                        {quotesArray.length > 0 ? <div id="text">{randomQuote.quote}</div> : <div>loading...</div>}
+            <React.Fragment>
+                <div id="quote-box">
+                    <div className="quote-text-wrapper">
+                        <div className="quote-text"><i className="fa-sharp fa-solid fa-quote-left fa-2xl quote-icon" style={{color: 'darkslateblue'}}></i>
+                            {quotesArray.length > 0 ? <div id="text">{randomQuote.quote}</div> : <div>loading...</div>}
+                        </div>
+                    </div>
+                    <div className="quote-author" id="author">
+                        {quotesArray.length > 0 ? <div id="text">- {randomQuote.author}</div> : <div>loading...</div>}
+                    </div>
+                    <div className="buttons">
+                        <div className="interact-links">
+                            <a href="" id="tweet-quote" className="interact twitter-button hover-effect" target="_blank">
+                                <i className="fa-brands fa-twitter fa-1x" style={{color: '#ffffff'}}></i>
+                            </a>
+                            <a href="" id="tumblr-quote" className="interact tumbrl-button hover-effect" target="_blank">
+                                <i className="fa-brands fa-tumblr fa-1x" style={{color: '#ffffff'}}></i>
+                            </a>
+                        </div>
+                        <button onClick={handleNewQuote} id="new-quote" className="new-quote hover-effect">New quote</button>
                     </div>
                 </div>
-                <div className="quote-author" id="author">
-                    {quotesArray.length > 0 ? <div id="text">- {randomQuote.author}</div> : <div>loading...</div>}
-                </div>
-                <div className="buttons">
-                    <div className="interact-links">
-                        <a href="" id="tweet-quote" className="interact twitter-button hover-effect" target="_blank">
-                            <i className="fa-brands fa-twitter fa-1x" style={{color: '#ffffff'}}></i>
-                        </a>
-                        <a href="" id="tumblr-quote" className="interact tumbrl-button hover-effect" target="_blank">
-                            <i className="fa-brands fa-tumblr fa-1x" style={{color: '#ffffff'}}></i>
-                        </a>
-                    </div>
-                    <button onClick={handleNewQuote} id="new-quote" className="new-quote hover-effect">New quote</button>
-                </div>
-            </div>
-
-
+                <div class="author-text">by fastninja</div>
+            </React.Fragment>
         )
       }
 
@@ -224,8 +258,6 @@
     
     
     <script> 
-    var colors = ['#16a085','#27ae60','#2c3e50','#f39c12','#e74c3c','#9b59b6','#FB6964','#342224','#472E32','#BDBB99','#77B1A9','#73A857','#483d8b'];
-
         function hexToRgb(hex) {
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
             return result ? {
@@ -234,52 +266,6 @@
                 b: parseInt(result[3], 16)
             } : null;
         }
-
-    async function fetchQuotesJSON() {
-        const response = await fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json');
-        const json = await response.json()
-        const quotesArray = await json.quotes;
-
-        
-        let randomQuote = getRandomElement(quotesArray);
-        let randomColor = getRandomElement(colors);
-
-        setRandomQuoteAndAuthor('text','author', randomQuote);
-        setRandomColor(randomColor);
-        setHoverEffect(randomColor);
-
-        setFlexibleHeight('quote-box');
-    }
-
-    function getRandomElement(array) {
-        return array[
-            Math.floor(Math.random() * array.length)
-        ];
-    }
-
-    function setRandomQuoteAndAuthor(textElementID, authorElementID, quoteElement) {
-        document.getElementById(textElementID).innerText = quoteElement.quote;
-        document.getElementById(authorElementID).innerText = "- " + quoteElement.author;
-
-        document.getElementById('tweet-quote').setAttribute('href', 'https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=' +
-            encodeURIComponent('"' + quoteElement.quote + '" ' + quoteElement.author))
-
-        document.getElementById('tumblr-quote').setAttribute('href', 'https://www.tumblr.com/widgets/share/tool?posttype=quote&tags=quotes,freecodecamp&caption=' +
-            encodeURIComponent(quoteElement.author) +
-            '&content=' +
-            encodeURIComponent(quoteElement.quote) +
-            '&canonicalUrl=https%3A%2F%2Fwww.tumblr.com%2Fbuttons&shareSource=tumblr_share_button')
-    }
-
-    function setRandomColor(color) {
-        document.getElementsByTagName('body')[0].setAttribute('style', 'background-color:' +color);
-        document.getElementsByClassName('interact')[0].setAttribute('style', 'background-color:' +color);
-        document.getElementsByClassName('interact')[1].setAttribute('style', 'background-color:' +color);
-        document.getElementsByClassName('new-quote')[0].setAttribute('style', 'background-color:' +color);
-        document.getElementById('text').setAttribute('style', 'color:' +color);
-        document.getElementById('author').setAttribute('style', 'color:' +color);
-        document.getElementsByClassName('quote-icon')[0].setAttribute('style', 'color:' +color);
-    }
 
 
     function setHoverEffect(color) {
@@ -295,20 +281,6 @@
         }
 
     }
-
-
-    function setFlexibleHeight(idElement) {
-        const boxHeight = 120 + document.getElementById('text').offsetHeight + document.getElementById('author').offsetHeight + 
-            document.getElementsByClassName('buttons')[0].offsetHeight;
-
-        document.getElementById(idElement).setAttribute('style', 'height: ' + boxHeight + 'px')
-
-    }
-
-    // fetchQuotesJSON()
-
-    // document.getElementById('new-quote').addEventListener('click', fetchQuotesJSON)
-
     </script>
 
 

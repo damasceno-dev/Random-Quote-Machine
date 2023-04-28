@@ -43,6 +43,7 @@
     .author-text {
         color:aliceblue;
         margin-top: 20px;
+        display: inline;
     }
     .quote-text-wrapper {
         gap: 5px;
@@ -191,7 +192,6 @@
 
     function setHoverEffect(color) {
         var css = document.getElementsByClassName('hover-effect');
-        console.log(css)
 
         for(let i = 0; i < css.length; i++) {
             css[i].addEventListener('mouseenter', (event) => {
@@ -208,6 +208,10 @@
     function setFlexibleHeight(idElement) {
         const boxHeight = 120 + document.getElementById('text').offsetHeight + document.getElementById('author').offsetHeight + 
             document.getElementsByClassName('buttons')[0].offsetHeight;
+            console.log('text height: ',document.getElementById('text').offsetHeight)
+            console.log('author height: ',document.getElementById('author').offsetHeight)
+            console.log('buttons height: ',document.getElementsByClassName('buttons')[0].offsetHeight)
+            console.log(boxHeight)
 
         document.getElementById(idElement).setAttribute('style', 'height: ' + boxHeight + 'px')
 

@@ -135,7 +135,6 @@
         var colors = ['#16a085','#27ae60','#2c3e50','#f39c12','#e74c3c','#9b59b6','#FB6964','#342224','#472E32','#BDBB99','#77B1A9','#73A857','#483d8b'];
         const [quotesArray, setQuotesArray] = React.useState([]);
         const [randomQuote, setRandomQuote] = React.useState({});
-        const [quoteBoxHeight, setQuoteBoxHeight] = React.useState(0);
 
         
         function getRandomElement(array) {
@@ -161,7 +160,6 @@
             // setRandomColor(randomColor);
             // setHoverEffect(randomColor);
 
-            // setFlexibleHeight('quote-box');
             }
 
 
@@ -170,17 +168,34 @@
         }, [])
 
 
-
-
-        function handleNewQuote() {            
+        function handleNewQuote() {        
+            setOpacityTransition();
 
             let quote= getRandomElement(quotesArray);
             setRandomQuote(quote)
 
             let randomColor = getRandomElement(colors);
             setRandomColors(randomColor);
+        }
 
-            // setFlexibleHeight(120)
+        function setOpacityTransition() {
+            let authorStyle = document.getElementById('author').style;
+                authorStyle.transition = 'color 1.2s'
+            let textStyle = document.getElementById('text').style;
+                textStyle.transition = 'color 1.2s'
+
+            textStyle.opacity = 0;
+            authorStyle.opacity = 0;
+            setTimeout(() => {
+                textStyle.transition = 'color 1.2s, opacity 1s'
+                textStyle.opacity = 1
+                }, 1000)
+                setTimeout(() => {
+                authorStyle.transition = 'color 1.2s, opacity 1s'
+                authorStyle.opacity = 1
+                }, 500)
+
+
         }
 
         function setRandomColors(color) {
@@ -199,26 +214,7 @@
             textStyle.color = color;
             authorStyle.color = color;
             quoteIconStyle.color = color;
-        }
-        
-        function setFlexibleHeight(marginNumber) {
-            let textElement = document.getElementById('text');
-            let authorElement = document.getElementById('author');
-            let buttonElements = document.getElementsByClassName('buttons')[0];
-            let quoteBoxStyle = document.getElementById('quote-box').style;
 
-            const boxHeight = marginNumber + textElement.offsetHeight + authorElement.offsetHeight + 
-            buttonElements.offsetHeight;
-            console.log('text height: ', textElement.offsetHeight)
-            console.log(document.getElementById('text').offsetHeight)
-            console.log('author height: ', authorElement.offsetHeight)
-            console.log('button height: ', buttonElements.offsetHeight)
-            setQuoteBoxHeight(boxHeight)
-
-
-            console.log(boxHeight)
-
-            console.log(quoteBoxStyle.height)
         }
 
         //todo: descobrir por que está atualizando a randomQuote
@@ -233,9 +229,7 @@
                             {quotesArray.length > 0 ? <div id="text">{randomQuote.quote}</div> : <div>loading...</div>}
                         </div>
                     </div>
-                    <div className="quote-author" id="author">
-                        {quotesArray.length > 0 ? <div id="text">- {randomQuote.author}</div> : <div>loading...</div>}
-                    </div>
+                        {quotesArray.length > 0 ? <div className="quote-author" id="author">- {randomQuote.author}</div> : <div>loading...</div>}
                     <div className="buttons">
                         <div className="interact-links">
                             <a href="" id="tweet-quote" className="interact twitter-button hover-effect" target="_blank">

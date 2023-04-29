@@ -108,7 +108,7 @@
     }
 
     .hover-effect:hover {
-                       transition: background-color 0.8s; 
+                       transition: background-color 0.5s; 
                     }
 
 </style>
@@ -155,13 +155,10 @@
             let randomColor = getRandomElement(colors);
             setRandomColors(randomColor);
 
-            // setFlexibleHeight(120)
-            // setRandomQuoteAndAuthor('text','author', randomQuote);
-            // setRandomColor(randomColor);
-            // setHoverEffect(randomColor);
+            setOpacityTransition();
+            setHoverEffect(randomColor)
 
-            }
-
+        }
 
         React.useEffect(() => {
             fetchQuotesJSON();
@@ -176,6 +173,8 @@
 
             let randomColor = getRandomElement(colors);
             setRandomColors(randomColor);
+            
+            setHoverEffect(randomColor)
         }
 
         function setOpacityTransition() {
@@ -190,10 +189,10 @@
                 textStyle.transition = 'color 1.2s, opacity 1s'
                 textStyle.opacity = 1
                 }, 1000)
-                setTimeout(() => {
-                authorStyle.transition = 'color 1.2s, opacity 1s'
-                authorStyle.opacity = 1
-                }, 500)
+            setTimeout(() => {
+            authorStyle.transition = 'color 1.2s, opacity 1s'
+            authorStyle.opacity = 1
+            }, 500)
 
 
         }
@@ -214,6 +213,29 @@
             textStyle.color = color;
             authorStyle.color = color;
             quoteIconStyle.color = color;
+        }
+
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+
+        function setHoverEffect(color) {
+            var css = document.getElementsByClassName('hover-effect');
+
+            for(let i = 0; i < css.length; i++) {
+                css[i].addEventListener('mouseenter', (event) => {
+                    event.target.style.backgroundColor = `rgba(${hexToRgb(color).r},${hexToRgb(color).g},${hexToRgb(color).b},0.5)`
+                })
+                css[i].addEventListener('mouseleave', (event) => {
+                    event.target.style.backgroundColor = `rgba(${hexToRgb(color).r},${hexToRgb(color).g},${hexToRgb(color).b},1)`
+                })
+            }
 
         }
 
@@ -232,52 +254,31 @@
                         {quotesArray.length > 0 ? <div className="quote-author" id="author">- {randomQuote.author}</div> : <div>loading...</div>}
                     <div className="buttons">
                         <div className="interact-links">
-                            <a href="" id="tweet-quote" className="interact twitter-button hover-effect" target="_blank">
+                            <a href={`https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=${encodeURIComponent('"' + randomQuote.quote + '" ' + randomQuote.author)}`} 
+                                id="tweet-quote" 
+                                className="interact twitter-button hover-effect" 
+                                target="_blank"
+                            >
                                 <i className="fa-brands fa-twitter fa-1x" style={{color: '#ffffff'}}></i>
                             </a>
-                            <a href="" id="tumblr-quote" className="interact tumbrl-button hover-effect" target="_blank">
+                            <a href={`https://www.tumblr.com/widgets/share/tool?posttype=quote&tags=quotes,freecodecamp&caption=${encodeURIComponent(randomQuote.author)}&content=${encodeURIComponent(randomQuote.quote)}&canonicalUrl=https%3A%2F%2Fwww.tumblr.com%2Fbuttons&shareSource=tumblr_share_button`} 
+                                id="tumblr-quote" 
+                                className="interact tumbrl-button hover-effect" 
+                                target="_blank"
+                            >
                                 <i className="fa-brands fa-tumblr fa-1x" style={{color: '#ffffff'}}></i>
                             </a>
                         </div>
                         <button onClick={handleNewQuote} id="new-quote" className="new-quote hover-effect">New quote</button>
                     </div>
                 </div>
-                <div class="author-text">by fastninja</div>
+                <div className="author-text">by fastninja</div>
             </React.Fragment>
         )
       }
 
       ReactDOM.render(<App/>, app);
     </script>
-    
-    
-    <script> 
-        function hexToRgb(hex) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : null;
-        }
-
-
-    function setHoverEffect(color) {
-        var css = document.getElementsByClassName('hover-effect');
-
-        for(let i = 0; i < css.length; i++) {
-            css[i].addEventListener('mouseenter', (event) => {
-                event.target.style.backgroundColor = `rgba(${hexToRgb(color).r},${hexToRgb(color).g},${hexToRgb(color).b},0.7)`
-            })
-            css[i].addEventListener('mouseleave', (event) => {
-                event.target.style.backgroundColor = `rgba(${hexToRgb(color).r},${hexToRgb(color).g},${hexToRgb(color).b},1)`
-            })
-        }
-
-    }
-    </script>
-
-
 
 </body>
 </html>
